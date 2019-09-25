@@ -1,0 +1,58 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2019, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+#
+
+
+# -----------------------------------------------------
+# Project setp
+#[user@desktop]
+
+    cat > "${HOME}/atolmis.settings" << 'EOF'
+source "${HOME:?}/projects.settings"
+ATOLMIS_REPO='git@github.com:Zarquan/atolmis.git'
+ATOLMIS_HOME="${PROJECTS_ROOT}/atolmis"
+ATOLMIS_CODE="${ATOLMIS_HOME:?}/github-zrq"
+EOF
+
+# -----------------------------------------------------
+# Checkout or update our code.
+#[user@desktop]
+
+    makeproject atolmis
+
+--START--
+Checking [/var/local/projects/atolmis]
+Creating [/var/local/projects/atolmis]
+Checking [/var/local/projects/atolmis]
+Checking [/var/local/projects/atolmis/github-zrq]
+Creating [/var/local/projects/atolmis/github-zrq]
+/var/local/projects/atolmis ~
+Cloning into 'github-zrq'...
+remote: Enumerating objects: 7, done.
+remote: Counting objects: 100% (7/7), done.
+remote: Compressing objects: 100% (7/7), done.
+remote: Total 7 (delta 1), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (7/7), 13.25 KiB | 4.42 MiB/s, done.
+Resolving deltas: 100% (1/1), done.
+~
+--END--
+
+
