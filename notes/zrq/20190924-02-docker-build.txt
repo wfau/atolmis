@@ -59,6 +59,20 @@
             --tag atolmis/ansible-client:${buildtag:?} \
             docker/ansible-client
 
+        docker build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/java:latest \
+            --tag atolmis/java:${buildtag:?} \
+            docker/java
+
+        docker build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/kafka:latest \
+            --tag atolmis/kafka:${buildtag:?} \
+            docker/kafka
+
     popd
 
 # -----------------------------------------------------
@@ -85,4 +99,9 @@
     docker push "atolmis/ansible-client:${buildtag:?}"
     docker push "atolmis/ansible-client:latest"
 
+    docker push "atolmis/java:${buildtag:?}"
+    docker push "atolmis/java:latest"
+
+    docker push "atolmis/kafka:${buildtag:?}"
+    docker push "atolmis/kafka:latest"
 
