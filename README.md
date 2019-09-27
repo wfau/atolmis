@@ -3,6 +3,7 @@ Common set of Docker containers used by other projects in WFAU.
 * Fedora
 * Java
 * Kafka
+* OpenSSH client
 * OpenStack client
 * Ansible client
 
