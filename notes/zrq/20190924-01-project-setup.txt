@@ -38,21 +38,19 @@ EOF
 
     makeproject atolmis
 
---START--
-Checking [/var/local/projects/atolmis]
-Creating [/var/local/projects/atolmis]
-Checking [/var/local/projects/atolmis]
-Checking [/var/local/projects/atolmis/github-zrq]
-Creating [/var/local/projects/atolmis/github-zrq]
-/var/local/projects/atolmis ~
-Cloning into 'github-zrq'...
-remote: Enumerating objects: 7, done.
-remote: Counting objects: 100% (7/7), done.
-remote: Compressing objects: 100% (7/7), done.
-remote: Total 7 (delta 1), reused 0 (delta 0), pack-reused 0
-Receiving objects: 100% (7/7), 13.25 KiB | 4.42 MiB/s, done.
-Resolving deltas: 100% (1/1), done.
-~
---END--
+    >   Checking [/var/local/projects/atolmis]
+    >   Creating [/var/local/projects/atolmis]
+    >   Checking [/var/local/projects/atolmis]
+    >   Checking [/var/local/projects/atolmis/github-zrq]
+    >   Creating [/var/local/projects/atolmis/github-zrq]
+    >   /var/local/projects/atolmis ~
+    >   Cloning into 'github-zrq'...
+    >   remote: Enumerating objects: 7, done.
+    >   remote: Counting objects: 100% (7/7), done.
+    >   remote: Compressing objects: 100% (7/7), done.
+    >   remote: Total 7 (delta 1), reused 0 (delta 0), pack-reused 0
+    >   Receiving objects: 100% (7/7), 13.25 KiB | 4.42 MiB/s, done.
+    >   Resolving deltas: 100% (1/1), done.
+    >   ~
 
 
