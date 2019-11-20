@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# FROM fedora:30
-# https://github.com/docker-library/repo-info/blob/master/repos/fedora/tag-details.md#fedora30
-FROM fedora@sha256:d8d53450cae00985f9dad54a3520944c59e64aa8f01d3be61988404e11c15973
+# FROM fedora:31
+# https://github.com/docker-library/repo-info/blob/master/repos/fedora/tag-details.md#fedora31
+FROM fedora@sha256:d4f7df6b691d61af6cee7328f82f1d8afdef63bc38f58516858ae3045083924a
 
 # https://docs.docker.com/v17.09/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG buildtag
@@ -36,16 +36,17 @@ VOLUME /var/cache/yum
 #
 # Install common admin tools.
 RUN dnf install -y \
+    gnupg \
+    gzip \
+    less \
+    nano \
+    patch \
+    pwgen \
     sed \
     tar \
-    zip \
-    less \
     wget \
-    nano \
-    gzip \
-    pwgen \
-    gnupg \
-    which
+    which \
+    zip
 
 #
 # Install the jq JSON parser.
