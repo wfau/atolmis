@@ -32,4 +32,11 @@ LABEL gitrepo="https://github.com/wfau/atolmis"
 # Install the Ansible client.
 RUN dnf install -y ansible
 
+# Apply our os_network fix.
+# https://github.com/ansible/ansible/issues/64495
+COPY network.patch /tmp
+RUN  patch -i /tmp/network.patch \
+     /usr/lib/python3.7/site-packages/ansible/modules/cloud/openstack/os_network.py
+
+
 

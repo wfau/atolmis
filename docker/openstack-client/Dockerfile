@@ -37,7 +37,7 @@ RUN dnf install -y \
     python3-octaviaclient \
     python3-openstackclient
 
-# Apply the encoding fix.
+# Apply our encoding fix.
 # https://review.opendev.org/gitweb?p=openstack%2Fpython-magnumclient.git;a=commitdiff;h=3f7b994acd3eaac2321006b34cebfcb07d924934
 COPY encoding.patch /tmp
 RUN  patch -i /tmp/encoding.patch \
@@ -46,6 +46,10 @@ RUN  patch -i /tmp/encoding.patch \
 #
 # Install the kubernetes client.
 RUN dnf install -y kubernetes-client
+
+#
+# Install a S3 client
+RUN dnf install -y s3cmd
 
 #
 # Add our util scripts.

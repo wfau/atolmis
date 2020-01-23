@@ -36,15 +36,17 @@ VOLUME /var/cache/yum
 #
 # Install common admin tools.
 RUN dnf install -y \
+    diffutils \
+    findutils \
     gnupg \
-    gzip \
-    less \
-    nano \
+    gzip  \
+    less  \
+    nano  \
     patch \
     pwgen \
-    sed \
-    tar \
-    wget \
+    sed   \
+    tar   \
+    wget  \
     which \
     zip
 
