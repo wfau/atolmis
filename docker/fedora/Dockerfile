@@ -17,7 +17,7 @@
 
 # FROM fedora:31
 # https://github.com/docker-library/repo-info/blob/master/repos/fedora/tag-details.md#fedora31
-FROM fedora@sha256:d4f7df6b691d61af6cee7328f82f1d8afdef63bc38f58516858ae3045083924a
+FROM fedora@sha256:c97879f8bebe49744307ea5c77ffc76c7cc97f3ddec72fb9a394bd4e4519b388
 
 # https://docs.docker.com/v17.09/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG buildtag
@@ -36,15 +36,17 @@ VOLUME /var/cache/yum
 #
 # Install common admin tools.
 RUN dnf install -y \
+    diffutils \
+    findutils \
     gnupg \
-    gzip \
-    less \
-    nano \
+    gzip  \
+    less  \
+    nano  \
     patch \
     pwgen \
-    sed \
-    tar \
-    wget \
+    sed   \
+    tar   \
+    wget  \
     which \
     zip
 
