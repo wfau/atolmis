@@ -34,6 +34,7 @@ LABEL gitrepo="https://github.com/wfau/atolmis"
 RUN dnf install -y \
     python3-heatclient \
     python3-magnumclient \
+    python3-manilaclient \
     python3-octaviaclient \
     python3-openstackclient
 
