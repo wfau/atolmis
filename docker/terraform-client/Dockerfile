@@ -17,7 +17,7 @@
 
 ARG buildtag
 
-FROM atolmis/openssh-client:${buildtag}
+FROM atolmis/openstack-client:${buildtag}
 
 # https://docs.docker.com/v17.09/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG buildtag
@@ -29,31 +29,20 @@ LABEL buildtime="${buildtime}"
 LABEL gitrepo="https://github.com/wfau/atolmis"
 
 #
-# Install the Openstack clients.
-# https://docs.openstack.org/python-openstackclient/latest/
-RUN dnf install -y \
-    python3-heatclient \
-    python3-magnumclient \
-    python3-manilaclient \
-    python3-octaviaclient \
-    python3-openstackclient
+# Install the Terraform client.
+# https://www.terraform.io/downloads.html
+# https://github.com/RSE-Cambridge/iris-magnum/blob/master/magnum-tour/README.md
+# https://computingforgeeks.com/how-to-install-terraform-on-fedora/
 
-# Apply our encoding fix.
-# https://review.opendev.org/gitweb?p=openstack%2Fpython-magnumclient.git;a=commitdiff;h=3f7b994acd3eaac2321006b34cebfcb07d924934
-#COPY encoding.patch /tmp
-#RUN  patch -i /tmp/encoding.patch \
-#     /usr/lib/python3.7/site-packages/magnumclient/common/utils.py
+ENV TERRA_VERSION 0.12.26
+ENV TERRA_ZIPFILE terraform_${TERRA_VERSION}_linux_amd64.zip
 
-#
-# Install the kubernetes client.
-RUN dnf install -y kubernetes-client
+# Download the tar file
+ADD https://releases.hashicorp.com/terraform/${TERRA_VERSION}/${TERRA_ZIPFILE} /tmp/${TERRA_ZIPFILE}
 
-#
-# Install a S3 client
-RUN dnf install -y s3cmd
+# Unpack the tar file.
+RUN unzip -d /tmp /tmp/${TERRA_ZIPFILE}
 
-#
-# Add our util scripts.
-COPY bin /usr/local/bin/
-RUN chmod a+x /usr/local/bin/*.sh
+# Install the binary.
+RUN mv /tmp/terraform /usr/local/bin/terraform
 

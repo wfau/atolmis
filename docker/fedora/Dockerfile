@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# FROM fedora:31
-# https://github.com/docker-library/repo-info/blob/master/repos/fedora/tag-details.md#fedora31
-FROM fedora@sha256:c97879f8bebe49744307ea5c77ffc76c7cc97f3ddec72fb9a394bd4e4519b388
+# FROM fedora:32
+# https://github.com/docker-library/repo-info/blob/master/repos/fedora/tag-details.md#fedora32
+FROM fedora@sha256:e69b5a62ce23c673885bddc94e6679c9b2af683059637ceddb9cff458537a326
 
 # https://docs.docker.com/v17.09/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG buildtag
@@ -49,6 +49,11 @@ RUN dnf install -y \
     wget  \
     which \
     zip
+
+#
+# Install system monitoring tools.
+RUN dnf install -y \
+    procps-ng
 
 #
 # Install the jq JSON parser.
