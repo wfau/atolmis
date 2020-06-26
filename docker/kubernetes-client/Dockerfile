@@ -17,7 +17,7 @@
 
 ARG buildtag
 
-FROM atolmis/kubernetes-client:${buildtag}
+FROM atolmis/openssh-client:${buildtag}
 
 # https://docs.docker.com/v17.09/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG buildtag
@@ -29,43 +29,23 @@ LABEL buildtime="${buildtime}"
 LABEL gitrepo="https://github.com/wfau/atolmis"
 
 #
-# Install the Openstack clients.
-# https://docs.openstack.org/python-openstackclient/latest/
-#RUN dnf install -y \
-#    python3-heatclient \
-#    python3-magnumclient \
-#    python3-manilaclient \
-#    python3-octaviaclient \
-#    python3-openstackclient
-
-# Apply our encoding fix.
-# https://review.opendev.org/gitweb?p=openstack%2Fpython-magnumclient.git;a=commitdiff;h=3f7b994acd3eaac2321006b34cebfcb07d924934
-#COPY encoding.patch /tmp
-#RUN  patch -i /tmp/encoding.patch \
-#     /usr/lib/python3.7/site-packages/magnumclient/common/utils.py
+# Install the Kubernetes client.
+RUN dnf install -y kubernetes-client
 
 #
-# Install PIP and GCC.
-RUN dnf install -y \
-    python3-devel \
-    python3-pip \
-    gcc
+# Install Helm.
+# https://helm.sh/docs/intro/install/
+# https://github.com/helm/helm/releases/tag/v3.2.4
+ENV HELM_ARCH linux-amd64
+ENV HELM_VERSION 3.2.4
+ENV HELM_TARFILE helm-v${HELM_VERSION}-${HELM_ARCH}.tar.gz
 
-#
-# Install the Openstack clients.
-RUN pip3 install \
-    python-heatclient \
-    python-magnumclient \
-    python-manilaclient \
-    python-octaviaclient \
-    python-openstackclient
+# Download the tar file
+ADD https://get.helm.sh/${HELM_TARFILE} /tmp/${HELM_TARFILE}
 
-#
-# Install a S3 client
-RUN dnf install -y s3cmd
+# Unpack the tar file.
+RUN tar --directory /tmp --gzip --extract --file /tmp/${HELM_TARFILE}
 
-#
-# Add our util scripts.
-COPY bin /usr/local/bin/
-RUN chmod a+x /usr/local/bin/*.sh
+# Install the binary.
+RUN mv  /tmp/${HELM_ARCH}/helm /usr/local/bin/helm
 

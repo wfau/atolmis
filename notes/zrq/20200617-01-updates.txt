@@ -52,6 +52,13 @@
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/kubernetes-client:latest \
+            --tag atolmis/kubernetes-client:${buildtag:?} \
+            docker/kubernetes-client
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
             --tag atolmis/openstack-client:latest \
             --tag atolmis/openstack-client:${buildtag:?} \
             docker/openstack-client
@@ -108,6 +115,9 @@
 
     podman push "atolmis/openssh-client:${buildtag:?}"
     podman push "atolmis/openssh-client:latest"
+
+    podman push "atolmis/kubernetes-client:${buildtag:?}"
+    podman push "atolmis/kubernetes-client:latest"
 
     podman push "atolmis/openstack-client:${buildtag:?}"
     podman push "atolmis/openstack-client:latest"
