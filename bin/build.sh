@@ -27,12 +27,6 @@
 #
 
 # -----------------------------------------------------
-# Check our secret function works.
-#[user@desktop]
-
-    secret frog
-
-# -----------------------------------------------------
 # Build our containers.
 #[user@desktop]
 
@@ -85,40 +79,5 @@
             docker/terraform-client
 
     popd
-
-# -----------------------------------------------------
-# Login to the Docker registry.
-#[user@desktop]
-
-    podman login \
-        --username $(secret docker.io.user) \
-        --password $(secret docker.io.pass) \
-        registry-1.docker.io
-
-    #
-    # New behaviour - podman needs the registry name here.
-    #
-
-# -----------------------------------------------------
-# Push our images to Docker hub.
-#[user@desktop]
-
-    podman push "atolmis/fedora:${buildtag:?}"
-    podman push "atolmis/fedora:latest"
-
-    podman push "atolmis/openssh-client:${buildtag:?}"
-    podman push "atolmis/openssh-client:latest"
-
-    podman push "atolmis/kubernetes-client:${buildtag:?}"
-    podman push "atolmis/kubernetes-client:latest"
-
-    podman push "atolmis/openstack-client:${buildtag:?}"
-    podman push "atolmis/openstack-client:latest"
-
-    podman push "atolmis/ansible-client:${buildtag:?}"
-    podman push "atolmis/ansible-client:latest"
-
-    podman push "atolmis/terraform-client:${buildtag:?}"
-    podman push "atolmis/terraform-client:latest"
 
 

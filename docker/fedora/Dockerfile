@@ -61,6 +61,10 @@ RUN dnf install -y \
 RUN dnf install -y jq
 
 #
+# Install YAML lint.
+RUN dnf install -y yamllint
+
+#
 # Install the ipcalc tools.
 # http://jodies.de/ipcalc
 RUN dnf install -y ipcalc
