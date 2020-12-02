@@ -34,7 +34,7 @@ LABEL gitrepo="https://github.com/wfau/atolmis"
 # https://github.com/RSE-Cambridge/iris-magnum/blob/master/magnum-tour/README.md
 # https://computingforgeeks.com/how-to-install-terraform-on-fedora/
 
-ENV TERRA_VERSION 0.12.28
+ENV TERRA_VERSION 0.13.5
 ENV TERRA_ZIPFILE terraform_${TERRA_VERSION}_linux_amd64.zip
 
 # Download the tar file

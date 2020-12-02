@@ -35,9 +35,9 @@ RUN dnf install -y kubernetes-client
 #
 # Install Helm.
 # https://helm.sh/docs/intro/install/
-# https://github.com/helm/helm/releases/tag/v3.2.4
+# https://github.com/helm/helm/releases/tag/v3.4.1
 ENV HELM_ARCH linux-amd64
-ENV HELM_VERSION 3.2.4
+ENV HELM_VERSION 3.4.1
 ENV HELM_TARFILE helm-v${HELM_VERSION}-${HELM_ARCH}.tar.gz
 
 # Download the tar file
