@@ -19,11 +19,6 @@
 #   </meta:licence>
 # </meta:header>
 #
-#zrq-notes-time
-#zrq-notes-indent
-#zrq-notes-crypto
-#zrq-notes-ansible
-#zrq-notes-osformat
 #
 
 # -----------------------------------------------------
