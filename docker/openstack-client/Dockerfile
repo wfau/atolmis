@@ -61,10 +61,6 @@ RUN pip3 install \
     python-openstackclient
 
 #
-# Install a S3 client
-RUN dnf install -y s3cmd
-
-#
 # Add our util scripts.
 COPY bin /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*.sh

@@ -1,0 +1,169 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2021, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+#
+
+
+
+# -----------------------------------------------------
+# -----------------------------------------------------
+
+    The new version of bash in Fedor-34 has bracketed-paste mode enabled.
+    This means when you paste text into the shell, it leaves it highlighted and does not execute it.
+    You need to explicitly add a <return> yourself.
+    This was changed because of security (websites injecting extra code into clipboard).
+
+    To set this back to the original behaviour:
+
+        set enable-bracketed-paste Off
+
+    Quote:
+
+        I've found it annoying, but without knowing what it was.
+        Now I'm not sure whether to keep or disable it.
+        -- seth
+
+    https://bugzilla.redhat.com/show_bug.cgi?id=1954366
+    https://utcc.utoronto.ca/~cks/space/blog/unix/BashBracketedPasteChange?showcomments#comments
+    https://askubuntu.com/questions/662222/why-bracketed-paste-mode-is-enabled-sporadically-in-my-terminal-screen
+
+    Looks like this will be the new normal from now on.
+    Get used to it, or forever be editing .bashrc to switch it off.
+
+# -----------------------------------------------------
+# -----------------------------------------------------
+
+
+# -----------------------------------------------------
+# Create a new branch to work on.
+#[user@desktop]
+
+    source "${HOME}/atolmis.env"
+    pushd "${ATOLMIS_CODE:?}"
+
+        newbranch=$(date '+%Y%m%d')-zrq-updates
+
+        git checkout master
+        git checkout -b "${newbranch:?}"
+
+        git push --set-upstream 'origin' "$(git branch --show-current)"
+
+    popd
+
+
+# -----------------------------------------------------
+# Build our containers.
+#[user@desktop]
+
+    buildtag=$(date '+%Y.%m.%d')
+    buildtime=$(date '+%Y-%m-%dT%H:%M:%S')
+
+    source "${HOME}/atolmis.env"
+    pushd "${ATOLMIS_CODE:?}"
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/fedora:latest \
+            --tag atolmis/fedora:${buildtag:?} \
+            docker/fedora
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/openssh-client:latest \
+            --tag atolmis/openssh-client:${buildtag:?} \
+            docker/openssh-client
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/kubernetes-client:latest \
+            --tag atolmis/kubernetes-client:${buildtag:?} \
+            docker/kubernetes-client
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/openstack-client:latest \
+            --tag atolmis/openstack-client:${buildtag:?} \
+            docker/openstack-client
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/ansible-client:latest \
+            --tag atolmis/ansible-client:${buildtag:?} \
+            docker/ansible-client
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/digitalocean-client:latest \
+            --tag atolmis/digitalocean-client:${buildtag:?} \
+            docker/digitalocean-client
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/terraform-client:latest \
+            --tag atolmis/terraform-client:${buildtag:?} \
+            docker/terraform-client
+
+    popd
+
+# -----------------------------------------------------
+# Login to the Docker registry.
+#[user@desktop]
+
+    podman login \
+        --username $(secret docker.io.user) \
+        --password $(secret docker.io.pass) \
+        registry-1.docker.io
+
+    #
+    # New behaviour - podman needs the registry name here.
+    #
+
+# -----------------------------------------------------
+# Push our images to Docker hub.
+#[user@desktop]
+
+    podman push "atolmis/fedora:${buildtag:?}"
+    podman push "atolmis/fedora:latest"
+
+    podman push "atolmis/openssh-client:${buildtag:?}"
+    podman push "atolmis/openssh-client:latest"
+
+    podman push "atolmis/kubernetes-client:${buildtag:?}"
+    podman push "atolmis/kubernetes-client:latest"
+
+    podman push "atolmis/openstack-client:${buildtag:?}"
+    podman push "atolmis/openstack-client:latest"
+
+    podman push "atolmis/ansible-client:${buildtag:?}"
+    podman push "atolmis/ansible-client:latest"
+
+    podman push "atolmis/terraform-client:${buildtag:?}"
+    podman push "atolmis/terraform-client:latest"
+
+    podman push "atolmis/digitalocean-client:${buildtag:?}"
+    podman push "atolmis/digitalocean-client:latest"
+

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020, ROE (http://www.roe.ac.uk/)
+# Copyright (c) 2021, ROE (http://www.roe.ac.uk/)
 # All rights reserved.
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 
 ARG buildtag
 
-FROM atolmis/openssh-client:${buildtag}
+FROM atolmis/kubernetes-client:${buildtag}
 
 # https://docs.docker.com/v17.09/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG buildtag
@@ -29,22 +29,20 @@ LABEL buildtime="${buildtime}"
 LABEL gitrepo="https://github.com/wfau/atolmis"
 
 #
-# Install the Kubernetes client.
-RUN dnf install -y kubernetes-client
+# Install the DigitalOcean client.
+# https://github.com/digitalocean/doctl/releases
+ENV DOCTL_ARCH linux-amd64
+ENV DOCTL_VERSION 1.64.0
+ENV DOCTL_TARFILE doctl-${DOCTL_VERSION}-${DOCTL_ARCH}.tar.gz
+ENV DOCTL_DOWNLOAD https://github.com/digitalocean/doctl/releases/download
 
-#
-# Install Helm.
-# https://helm.sh/docs/intro/install/
-# https://github.com/helm/helm/releases
-ENV HELM_ARCH linux-amd64
-ENV HELM_VERSION 3.6.3
-ENV HELM_TARFILE helm-v${HELM_VERSION}-${HELM_ARCH}.tar.gz
+ADD ${DOCTL_DOWNLOAD}/v${DOCTL_VERSION}/${DOCTL_TARFILE} /tmp/${DOCTL_TARFILE}
+RUN tar --directory /tmp --gzip --extract --file /tmp/${DOCTL_TARFILE}
+RUN mv  /tmp/doctl /usr/local/bin/doctl
 
-ADD https://get.helm.sh/${HELM_TARFILE} /tmp/${HELM_TARFILE}
-RUN tar --directory /tmp --gzip --extract --file /tmp/${HELM_TARFILE}
-RUN mv  /tmp/${HELM_ARCH}/helm /usr/local/bin/helm
 
-#
-# Install the S3 client
-RUN dnf install -y s3cmd
+
+
+
+
 

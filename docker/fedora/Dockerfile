@@ -15,9 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# FROM fedora:33
-# https://github.com/docker-library/repo-info/blob/master/repos/fedora/tag-details.md#fedora33
-FROM fedora@sha256:aa889c59fc048b597dcfab40898ee3fcaad9ed61caf12bcfef44493ee670e9df
+FROM fedora:34
 
 # https://docs.docker.com/v17.09/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG buildtag
@@ -36,6 +34,7 @@ VOLUME /var/cache/yum
 #
 # Install common admin tools.
 RUN dnf install -y \
+    dateutils \
     diffutils \
     findutils \
     gnupg \
@@ -65,8 +64,8 @@ RUN dnf install -y jq
 RUN dnf install -y yamllint
 
 #
-# Install YAML parser.
-RUN wget -O   '/usr/bin/yq' 'https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64'
+# Install yq YAML parser.
+RUN wget -O   '/usr/bin/yq' 'https://github.com/mikefarah/yq/releases/download/v4.12.0/yq_linux_amd64'
 RUN chmod a+x '/usr/bin/yq'
 
 #
