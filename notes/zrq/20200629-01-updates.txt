@@ -72,20 +72,6 @@
             --tag atolmis/terraform-client:${buildtag:?} \
             docker/terraform-client
 
-        podman build \
-            --build-arg "buildtag=${buildtag:?}" \
-            --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/java:latest \
-            --tag atolmis/java:${buildtag:?} \
-            docker/java
-
-        podman build \
-            --build-arg "buildtag=${buildtag:?}" \
-            --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/kafka:latest \
-            --tag atolmis/kafka:${buildtag:?} \
-            docker/kafka
-
     popd
 
 # -----------------------------------------------------
@@ -123,9 +109,4 @@
     podman push "atolmis/terraform-client:${buildtag:?}"
     podman push "atolmis/terraform-client:latest"
 
-    podman push "atolmis/java:${buildtag:?}"
-    podman push "atolmis/java:latest"
-
-    podman push "atolmis/kafka:${buildtag:?}"
-    podman push "atolmis/kafka:latest"
 

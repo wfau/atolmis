@@ -1,7 +1,7 @@
 #
 # <meta:header>
 #   <meta:licence>
-#     Copyright (c) 2020, ROE (http://www.roe.ac.uk/)
+#     Copyright (c) 2021, ROE (http://www.roe.ac.uk/)
 #
 #     This information is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,54 @@
 # </meta:header>
 #
 #
+
+
+
+# -----------------------------------------------------
+# -----------------------------------------------------
+
+    The new version of bash in Fedor-34 has bracketed-paste mode enabled.
+    This means when you paste text into the shell, it leaves it highlighted and does not execute it.
+    You need to explicitly add a <return> yourself.
+    This was changed because of security (websites injecting extra code into clipboard).
+
+    To set this back to the original behaviour:
+
+        set enable-bracketed-paste Off
+
+    Quote:
+
+        I've found it annoying, but without knowing what it was.
+        Now I'm not sure whether to keep or disable it.
+        -- seth
+
+    https://bugzilla.redhat.com/show_bug.cgi?id=1954366
+    https://utcc.utoronto.ca/~cks/space/blog/unix/BashBracketedPasteChange?showcomments#comments
+    https://askubuntu.com/questions/662222/why-bracketed-paste-mode-is-enabled-sporadically-in-my-terminal-screen
+
+    Looks like this will be the new normal from now on.
+    Get used to it, or forever be editing .bashrc to switch it off.
+
+# -----------------------------------------------------
+# -----------------------------------------------------
+
+
+# -----------------------------------------------------
+# Create a new branch to work on.
+#[user@desktop]
+
+    source "${HOME}/atolmis.env"
+    pushd "${ATOLMIS_CODE:?}"
+
+        newbranch=$(date '+%Y%m%d')-zrq-updates
+
+        git checkout master
+        git checkout -b "${newbranch:?}"
+
+        git push --set-upstream 'origin' "$(git branch --show-current)"
+
+    popd
+
 
 # -----------------------------------------------------
 # Build our containers.
@@ -68,23 +116,16 @@
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/digitalocean-client:latest \
+            --tag atolmis/digitalocean-client:${buildtag:?} \
+            docker/digitalocean-client
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
             --tag atolmis/terraform-client:latest \
             --tag atolmis/terraform-client:${buildtag:?} \
             docker/terraform-client
-
-        podman build \
-            --build-arg "buildtag=${buildtag:?}" \
-            --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/java:latest \
-            --tag atolmis/java:${buildtag:?} \
-            docker/java
-
-        podman build \
-            --build-arg "buildtag=${buildtag:?}" \
-            --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/kafka:latest \
-            --tag atolmis/kafka:${buildtag:?} \
-            docker/kafka
 
     popd
 
@@ -123,9 +164,6 @@
     podman push "atolmis/terraform-client:${buildtag:?}"
     podman push "atolmis/terraform-client:latest"
 
-    podman push "atolmis/java:${buildtag:?}"
-    podman push "atolmis/java:latest"
-
-    podman push "atolmis/kafka:${buildtag:?}"
-    podman push "atolmis/kafka:latest"
+    podman push "atolmis/digitalocean-client:${buildtag:?}"
+    podman push "atolmis/digitalocean-client:latest"
 

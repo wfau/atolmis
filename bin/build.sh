@@ -1,3 +1,4 @@
+#!/bin/sh
 #
 # <meta:header>
 #   <meta:licence>
@@ -72,60 +73,6 @@
             --tag atolmis/terraform-client:${buildtag:?} \
             docker/terraform-client
 
-        podman build \
-            --build-arg "buildtag=${buildtag:?}" \
-            --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/java:latest \
-            --tag atolmis/java:${buildtag:?} \
-            docker/java
-
-        podman build \
-            --build-arg "buildtag=${buildtag:?}" \
-            --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/kafka:latest \
-            --tag atolmis/kafka:${buildtag:?} \
-            docker/kafka
-
     popd
 
-# -----------------------------------------------------
-# Login to the Docker registry.
-#[user@desktop]
-
-    podman login \
-        --username $(secret docker.io.user) \
-        --password $(secret docker.io.pass) \
-        registry-1.docker.io
-
-    #
-    # New behaviour - podman needs the registry name here.
-    #
-
-# -----------------------------------------------------
-# Push our images to Docker hub.
-#[user@desktop]
-
-    podman push "atolmis/fedora:${buildtag:?}"
-    podman push "atolmis/fedora:latest"
-
-    podman push "atolmis/openssh-client:${buildtag:?}"
-    podman push "atolmis/openssh-client:latest"
-
-    podman push "atolmis/kubernetes-client:${buildtag:?}"
-    podman push "atolmis/kubernetes-client:latest"
-
-    podman push "atolmis/openstack-client:${buildtag:?}"
-    podman push "atolmis/openstack-client:latest"
-
-    podman push "atolmis/ansible-client:${buildtag:?}"
-    podman push "atolmis/ansible-client:latest"
-
-    podman push "atolmis/terraform-client:${buildtag:?}"
-    podman push "atolmis/terraform-client:latest"
-
-    podman push "atolmis/java:${buildtag:?}"
-    podman push "atolmis/java:latest"
-
-    podman push "atolmis/kafka:${buildtag:?}"
-    podman push "atolmis/kafka:latest"
 

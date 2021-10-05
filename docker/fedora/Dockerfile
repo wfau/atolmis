@@ -15,9 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# FROM fedora:32
-# https://github.com/docker-library/repo-info/blob/master/repos/fedora/tag-details.md#fedora32
-FROM fedora@sha256:e69b5a62ce23c673885bddc94e6679c9b2af683059637ceddb9cff458537a326
+FROM fedora:34
 
 # https://docs.docker.com/v17.09/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG buildtag
@@ -36,6 +34,7 @@ VOLUME /var/cache/yum
 #
 # Install common admin tools.
 RUN dnf install -y \
+    dateutils \
     diffutils \
     findutils \
     gnupg \
@@ -61,15 +60,18 @@ RUN dnf install -y \
 RUN dnf install -y jq
 
 #
+# Install YAML lint.
+RUN dnf install -y yamllint
+
+#
+# Install yq YAML parser.
+RUN wget -O   '/usr/bin/yq' 'https://github.com/mikefarah/yq/releases/download/v4.12.0/yq_linux_amd64'
+RUN chmod a+x '/usr/bin/yq'
+
+#
 # Install the ipcalc tools.
 # http://jodies.de/ipcalc
 RUN dnf install -y ipcalc
-
-#
-# Set the terminal type for exec.
-# https://github.com/docker/docker/issues/9299
-# Looks like this is fixed in Fedora-30
-#ENV TERM xterm
 
 #
 # Add our install scripts.
