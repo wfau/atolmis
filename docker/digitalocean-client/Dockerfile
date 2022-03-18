@@ -32,7 +32,7 @@ LABEL gitrepo="https://github.com/wfau/atolmis"
 # Install the DigitalOcean client.
 # https://github.com/digitalocean/doctl/releases
 ENV DOCTL_ARCH linux-amd64
-ENV DOCTL_VERSION 1.64.0
+ENV DOCTL_VERSION 1.71.1
 ENV DOCTL_TARFILE doctl-${DOCTL_VERSION}-${DOCTL_ARCH}.tar.gz
 ENV DOCTL_DOWNLOAD https://github.com/digitalocean/doctl/releases/download
 
