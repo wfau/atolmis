@@ -28,8 +28,8 @@ LABEL buildtag="${buildtag}"
 LABEL buildtime="${buildtime}"
 LABEL gitrepo="https://github.com/wfau/atolmis"
 
-ENV KAFKA_VERSION 2.3.0
-ENV SCALA_VERSION 2.12
+ENV KAFKA_VERSION 3.1.0
+ENV SCALA_VERSION 2.13
 ENV FULL_VERSION  ${SCALA_VERSION}-${KAFKA_VERSION}
 
 ENV KAFKA_DIRNAME kafka_${FULL_VERSION}
