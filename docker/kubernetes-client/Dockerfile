@@ -37,14 +37,14 @@ RUN dnf install -y kubernetes-client
 # https://helm.sh/docs/intro/install/
 # https://github.com/helm/helm/releases
 ENV HELM_ARCH linux-amd64
-ENV HELM_VERSION 3.6.3
+ENV HELM_VERSION 3.8.1
 ENV HELM_TARFILE helm-v${HELM_VERSION}-${HELM_ARCH}.tar.gz
 
 ADD https://get.helm.sh/${HELM_TARFILE} /tmp/${HELM_TARFILE}
 RUN tar --directory /tmp --gzip --extract --file /tmp/${HELM_TARFILE}
 RUN mv  /tmp/${HELM_ARCH}/helm /usr/local/bin/helm
 
-#
-# Install the S3 client
-RUN dnf install -y s3cmd
+RUN rmdir /tmp/${HELM_ARCH}
+RUN rm    /tmp/${HELM_TARFILE}
+
 

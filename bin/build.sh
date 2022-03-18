@@ -69,6 +69,13 @@
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
+            --tag atolmis/digitalocean-client:latest \
+            --tag atolmis/digitalocean-client:${buildtag:?} \
+            docker/digitalocean-client
+
+        podman build \
+            --build-arg "buildtag=${buildtag:?}" \
+            --build-arg "buildtime=${buildtime:?}" \
             --tag atolmis/terraform-client:latest \
             --tag atolmis/terraform-client:${buildtag:?} \
             docker/terraform-client

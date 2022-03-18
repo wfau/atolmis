@@ -1,0 +1,150 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2022, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+#zrq-notes-time
+#zrq-notes-indent
+#zrq-notes-crypto
+#zrq-notes-ansible
+#zrq-notes-osformat
+#zrq-notes-zeppelin
+#
+
+
+    Target:
+
+        Update the containers and fix issues.
+
+    Result:
+
+        Work in progress ....
+
+# -----------------------------------------------------
+# Checkout where we are ...
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        git status
+
+    >   On branch 20210824-zrq-updates
+    >   Your branch is up to date with 'origin/20210824-zrq-updates'.
+    >
+    >   Changes not staged for commit:
+    >     (use "git add <file>..." to update what will be committed)
+    >     (use "git restore <file>..." to discard changes in working directory)
+    >   	modified:   bin/build.sh
+    >   	modified:   bin/clean.sh
+    >   	modified:   bin/push.sh
+    >
+    >   Untracked files:
+    >     (use "git add <file>..." to include in what will be committed)
+    >   	notes/zrq/20220318-01-updates.txt
+
+    popd
+
+
+
+# -----------------------------------------------------
+# Check where we are, update versions and fix some issues ...
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        meld . &
+            ....
+            ....
+
+        gedit bin/build.sh
+            ....
+
+        gedit bin/push.sh
+            ....
+
+        gedit docker/fedora/Dockerfile
+            ....
+
+        gedit docker/kubernetes-client/Dockerfile
+            ....
+
+
+    popd
+
+
+# -----------------------------------------------------
+# Build all our containers
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        bin/clean.sh
+
+        bin/build.sh
+
+    >   /var/local/projects/WFAU/atolmis/github-zrq /var/local/projects/WFAU/atolmis/github-zrq
+    >   STEP 1: FROM registry.fedoraproject.org/fedora:36
+    >   ....
+    >   ....
+    >   STEP 10: RUN dnf install -y     dateutils     diffutils     findutils     gnupg     gzip      less      nano      patch     pwgen     sed       tar       wget      which     zip
+    >   Fedora 36 - x86_64                              0.0  B/s |   0  B     00:00
+    >   Errors during downloading metadata for repository 'fedora':
+    >     - Curl error (6): Couldn't resolve host name for https://mirrors.fedoraproject.org/metalink?repo=fedora-36&arch=x86_64 [getaddrinfo() thread failed to start]
+    >   Error: Failed to download metadata for repo 'fedora': Cannot prepare internal mirrorlist: Curl error (6): Couldn't resolve host name for https://mirrors.fedoraproject.org/metalink?repo=fedora-36&arch=x86_64 [getaddrinfo() thread failed to start]
+    >   ....
+    >   ....
+
+    #
+    # Which looks like this issue.
+    # https://github.com/containers/buildah/issues/2168
+
+    #
+    # Comment at the ned suggests this is an issue with 'crun'.
+    # https://github.com/containers/buildah/issues/2168#issuecomment-587388143
+
+        I think /usr/share/containers/seccomp.json already has an entry for clone that filters
+        for flags argument, it's just that crun does not apply it correctly.
+        This crun upstream fix has fixed the issue for me.
+
+    #
+    # linux: use correct indices for seccomp arguments
+    # https://github.com/containers/crun/commit/08efb1e31597a435c7afd59e844d35c4888841e9
+
+    #
+    # Fix went in it Feb 2020, so it might already be in the latest Fedora.
+    # Tyrosine has a more recent version of Fedora, we should try the build there.
+    #
+
+# -----------------------------------------------------
+# Save our changes
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        git add .
+
+        git commit -m "Updated versions and fixed issues"
+
+
+
+
+

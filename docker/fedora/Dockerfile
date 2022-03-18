@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM fedora:34
+# FROM fedora:36
+FROM registry.fedoraproject.org/fedora:36
 
 # https://docs.docker.com/v17.09/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG buildtag
@@ -65,13 +66,22 @@ RUN dnf install -y yamllint
 
 #
 # Install yq YAML parser.
-RUN wget -O   '/usr/bin/yq' 'https://github.com/mikefarah/yq/releases/download/v4.12.0/yq_linux_amd64'
+RUN wget -O   '/usr/bin/yq' 'https://github.com/mikefarah/yq/releases/download/v4.22.1/yq_linux_amd64'
 RUN chmod a+x '/usr/bin/yq'
 
 #
 # Install the ipcalc tools.
 # http://jodies.de/ipcalc
 RUN dnf install -y ipcalc
+
+#
+# Install the bind-utils.
+# https://github.com/wfau/atolmis/issues/17
+RUN dnf install -y bind-utils
+
+#
+# Install the S3 client
+RUN dnf install -y s3cmd
 
 #
 # Add our install scripts.
