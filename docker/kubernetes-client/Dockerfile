@@ -44,7 +44,7 @@ ADD https://get.helm.sh/${HELM_TARFILE} /tmp/${HELM_TARFILE}
 RUN tar --directory /tmp --gzip --extract --file /tmp/${HELM_TARFILE}
 RUN mv  /tmp/${HELM_ARCH}/helm /usr/local/bin/helm
 
-RUN rmdir /tmp/${HELM_ARCH}
-RUN rm    /tmp/${HELM_TARFILE}
+RUN rm -rf /tmp/${HELM_ARCH}
+RUN rm -f  /tmp/${HELM_TARFILE}
 
 
