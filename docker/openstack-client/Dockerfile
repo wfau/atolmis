@@ -29,22 +29,6 @@ LABEL buildtime="${buildtime}"
 LABEL gitrepo="https://github.com/wfau/atolmis"
 
 #
-# Install the Openstack clients.
-# https://docs.openstack.org/python-openstackclient/latest/
-#RUN dnf install -y \
-#    python3-heatclient \
-#    python3-magnumclient \
-#    python3-manilaclient \
-#    python3-octaviaclient \
-#    python3-openstackclient
-
-# Apply our encoding fix.
-# https://review.opendev.org/gitweb?p=openstack%2Fpython-magnumclient.git;a=commitdiff;h=3f7b994acd3eaac2321006b34cebfcb07d924934
-#COPY encoding.patch /tmp
-#RUN  patch -i /tmp/encoding.patch \
-#     /usr/lib/python3.7/site-packages/magnumclient/common/utils.py
-
-#
 # Install PIP and GCC.
 RUN dnf install -y \
     python3-devel \
