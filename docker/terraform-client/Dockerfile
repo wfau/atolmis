@@ -41,5 +41,5 @@ ENV TERRA_ZIPFILE terraform_${TERRA_VERSION}_linux_amd64.zip
 ADD https://releases.hashicorp.com/terraform/${TERRA_VERSION}/${TERRA_ZIPFILE} /tmp/${TERRA_ZIPFILE}
 RUN unzip -d /tmp /tmp/${TERRA_ZIPFILE}
 RUN mv /tmp/terraform /usr/local/bin/terraform
-RUM rm /tmp/${TERRA_ZIPFILE}
+RUN rm /tmp/${TERRA_ZIPFILE}
 
