@@ -34,20 +34,12 @@ LABEL gitrepo="https://github.com/wfau/atolmis"
 # https://github.com/RSE-Cambridge/iris-magnum/blob/master/magnum-tour/README.md
 # https://computingforgeeks.com/how-to-install-terraform-on-fedora/
 
-#ENV TERRA_VERSION 1.1.7
-#ENV TERRA_ZIPFILE terraform_${TERRA_VERSION}_linux_amd64.zip
-#
-# Download the tar file
-#ADD https://releases.hashicorp.com/terraform/${TERRA_VERSION}/${TERRA_ZIPFILE} /tmp/${TERRA_ZIPFILE}
-#
-# Unpack the tar file.
-#RUN unzip -d /tmp /tmp/${TERRA_ZIPFILE}
-#
-# Install the binary.
-#RUN mv /tmp/terraform /usr/local/bin/terraform
+ENV TERRA_VERSION 1.1.7
+ENV TERRA_ZIPFILE terraform_${TERRA_VERSION}_linux_amd64.zip
 
-RUN dnf install -y dnf-plugins-core
+# Download and install the zip file
+ADD https://releases.hashicorp.com/terraform/${TERRA_VERSION}/${TERRA_ZIPFILE} /tmp/${TERRA_ZIPFILE}
+RUN unzip -d /tmp /tmp/${TERRA_ZIPFILE}
+RUN mv /tmp/terraform /usr/local/bin/terraform
+RUM rm /tmp/${TERRA_ZIPFILE}
 
-RUN dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
-
-RUN dnf -y install terraform
