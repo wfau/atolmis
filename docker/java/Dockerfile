@@ -23,10 +23,11 @@ FROM atolmis/fedora:${buildtag}
 ARG buildtag
 ARG buildtime
 
-LABEL maintainer="Dave Morris <docker-admin@metagrid.co.uk>"
-LABEL buildtag="${buildtag}"
-LABEL buildtime="${buildtime}"
-LABEL gitrepo="https://github.com/wfau/atolmis"
+LABEL maintainer "Dave Morris <docker-admin@metagrid.co.uk>"
+LABEL buildtag   "${buildtag}"
+LABEL buildtime  "${buildtime}"
+LABEL gitrepo    "https://github.com/wfau/atolmis"
+LABEL org.opencontainers.image.source "https://github.com/wfau/atolmis"
 
 #
 # Install Java

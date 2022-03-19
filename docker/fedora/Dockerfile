@@ -22,10 +22,11 @@ FROM registry.fedoraproject.org/fedora:36
 ARG buildtag
 ARG buildtime
 
-LABEL maintainer="Dave Morris <docker-admin@metagrid.co.uk>"
-LABEL buildtag="${buildtag}"
-LABEL buildtime="${buildtime}"
-LABEL gitrepo="https://github.com/wfau/atolmis"
+LABEL maintainer "Dave Morris <docker-admin@metagrid.co.uk>"
+LABEL buildtag   "${buildtag}"
+LABEL buildtime  "${buildtime}"
+LABEL gitrepo    "https://github.com/wfau/atolmis"
+LABEL org.opencontainers.image.source "https://github.com/wfau/atolmis"
 
 #
 # Mount the YUM cache as a volume.

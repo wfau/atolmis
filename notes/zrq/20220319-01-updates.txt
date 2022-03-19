@@ -48,5 +48,34 @@
 
         bin/build.sh
 
+--START--
+....
+....
+--END--
+
+
+        podman images
+
+--START--
+REPOSITORY                             TAG         IMAGE ID      CREATED             SIZE
+localhost/atolmis/terraform-client     2022.03.19  456942a5899c  About a minute ago  1.11 GB
+localhost/atolmis/terraform-client     latest      456942a5899c  About a minute ago  1.11 GB
+localhost/atolmis/digitalocean-client  2022.03.19  85712ab1b740  About a minute ago  628 MB
+localhost/atolmis/digitalocean-client  latest      85712ab1b740  About a minute ago  628 MB
+localhost/atolmis/ansible-client       2022.03.19  8175568b4406  About a minute ago  1.38 GB
+localhost/atolmis/ansible-client       latest      8175568b4406  About a minute ago  1.38 GB
+localhost/atolmis/openstack-client     2022.03.19  21aee6afa038  4 minutes ago       970 MB
+localhost/atolmis/openstack-client     latest      21aee6afa038  4 minutes ago       970 MB
+localhost/atolmis/kubernetes-client    2022.03.19  c4322cacb0b4  7 minutes ago       565 MB
+localhost/atolmis/kubernetes-client    latest      c4322cacb0b4  7 minutes ago       565 MB
+localhost/atolmis/openssh-client       2022.03.19  64668118f5cf  9 minutes ago       405 MB
+localhost/atolmis/openssh-client       latest      64668118f5cf  9 minutes ago       405 MB
+localhost/atolmis/fedora               2022.03.19  2c737ccd37dc  10 minutes ago      377 MB
+localhost/atolmis/fedora               latest      2c737ccd37dc  10 minutes ago      377 MB
+registry.fedoraproject.org/fedora      36          a642b5368fdc  18 hours ago        169 MB
+--END--
+
+
+        bin/push.sh
 
 
