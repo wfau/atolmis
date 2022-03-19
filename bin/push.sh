@@ -37,37 +37,55 @@
 # Login to the Docker registry.
 #[user@desktop]
 
-    podman login \
-        --username $(secret docker.io.user) \
-        --password $(secret docker.io.pass) \
-        registry-1.docker.io
+    secret "ghcr.io.pass" \
+    | podman login \
+        --username "$(secret ghcr.io.user)" \
+        "ghcr.io"
 
-    #
-    # New behaviour - podman needs the registry name here.
-    #
 
 # -----------------------------------------------------
-# Push our images to Docker hub.
+# Push our images to the GitHub repository.
 
-    podman push "atolmis/fedora:${buildtag:?}"
-    podman push "atolmis/fedora:latest"
+    pushtag()
+        {
+        local imagerepo=${1:?}
+        local imagename=${2:?}
+        local imagetag=${3:?}
+        podman tag \
+            "${imagename:?}:${imagetag:?}" \
+            "${imagerepo:?}/${imagename:?}:${imagetag:?}"
+        podman push \
+            "${imagerepo:?}/${imagename:?}:${imagetag:?}"
+        }
 
-    podman push "atolmis/openssh-client:${buildtag:?}"
-    podman push "atolmis/openssh-client:latest"
+    pushtags()
+        {
+        local imagerepo=${1:?}
+        local imagename=${2:?}
+        local imagetag=${3:?}
+        tagpush "${imagerepo:?}" "${imagename:?}" "latest"
+        tagpush "${imagerepo:?}" "${imagename:?}" "${buildtag:?}"
+        }
 
-    podman push "atolmis/kubernetes-client:${buildtag:?}"
-    podman push "atolmis/kubernetes-client:latest"
+    tagpush "ghcr.io" "atolmis/fedora" "latest"
+    tagpush "ghcr.io" "atolmis/fedora" "${buildtag:?}"
 
-    podman push "atolmis/openstack-client:${buildtag:?}"
-    podman push "atolmis/openstack-client:latest"
+    tagpush "ghcr.io" "atolmis/openssh-client" "latest"
+    tagpush "ghcr.io" "atolmis/openssh-client" "${buildtag:?}"
 
-    podman push "atolmis/ansible-client:${buildtag:?}"
-    podman push "atolmis/ansible-client:latest"
+    tagpush "ghcr.io" "atolmis/kubernetes-client" "latest"
+    tagpush "ghcr.io" "atolmis/kubernetes-client" "${buildtag:?}"
 
-    podman push "atolmis/digitalocean-client:${buildtag:?}"
-    podman push "atolmis/digitalocean-client:latest"
+    tagpush "ghcr.io" "atolmis/openstack-client" "latest"
+    tagpush "ghcr.io" "atolmis/openstack-client" "${buildtag:?}"
 
-    podman push "atolmis/terraform-client:${buildtag:?}"
-    podman push "atolmis/terraform-client:latest"
+    tagpush "ghcr.io" "atolmis/ansible-client" "latest"
+    tagpush "ghcr.io" "atolmis/ansible-client" "${buildtag:?}"
+
+    tagpush "ghcr.io" "atolmis/digitalocean-client" "latest"
+    tagpush "ghcr.io" "atolmis/digitalocean-client" "${buildtag:?}"
+
+    tagpush "ghcr.io" "atolmis/terraform-client" "latest"
+    tagpush "ghcr.io" "atolmis/terraform-client" "${buildtag:?}"
 
 

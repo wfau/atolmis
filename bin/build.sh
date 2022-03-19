@@ -34,50 +34,50 @@
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/fedora:latest \
-            --tag atolmis/fedora:${buildtag:?} \
+            --tag "atolmis/fedora:latest" \
+            --tag "atolmis/fedora:${buildtag:?}" \
             docker/fedora
 
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/openssh-client:latest \
-            --tag atolmis/openssh-client:${buildtag:?} \
+            --tag "atolmis/openssh-client:latest" \
+            --tag "atolmis/openssh-client:${buildtag:?}" \
             docker/openssh-client
 
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/kubernetes-client:latest \
-            --tag atolmis/kubernetes-client:${buildtag:?} \
+            --tag "atolmis/kubernetes-client:latest" \
+            --tag "atolmis/kubernetes-client:${buildtag:?}" \
             docker/kubernetes-client
 
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/openstack-client:latest \
-            --tag atolmis/openstack-client:${buildtag:?} \
+            --tag "atolmis/openstack-client:latest" \
+            --tag "atolmis/openstack-client:${buildtag:?}" \
             docker/openstack-client
 
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/ansible-client:latest \
-            --tag atolmis/ansible-client:${buildtag:?} \
+            --tag "atolmis/ansible-client:latest" \
+            --tag "atolmis/ansible-client:${buildtag:?}" \
             docker/ansible-client
 
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/digitalocean-client:latest \
-            --tag atolmis/digitalocean-client:${buildtag:?} \
+            --tag "atolmis/digitalocean-client:latest" \
+            --tag "atolmis/digitalocean-client:${buildtag:?}" \
             docker/digitalocean-client
 
         podman build \
             --build-arg "buildtag=${buildtag:?}" \
             --build-arg "buildtime=${buildtime:?}" \
-            --tag atolmis/terraform-client:latest \
-            --tag atolmis/terraform-client:${buildtag:?} \
+            --tag "atolmis/terraform-client:latest" \
+            --tag "atolmis/terraform-client:${buildtag:?}" \
             docker/terraform-client
 
     popd
