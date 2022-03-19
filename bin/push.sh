@@ -37,10 +37,11 @@
 # Login to the Docker registry.
 #[user@desktop]
 
-    secret "ghcr.io.pass" \
+    secret 'ghcr.io.pass' \
     | podman login \
-        --username "$(secret ghcr.io.user)" \
-        "ghcr.io"
+        --password-stdin \
+        --username "$(secret 'ghcr.io.user')" \
+        'ghcr.io'
 
 
 # -----------------------------------------------------
@@ -48,44 +49,44 @@
 
     pushtag()
         {
-        local imagerepo=${1:?}
+        local reponame=${1:?}
         local imagename=${2:?}
         local imagetag=${3:?}
         podman tag \
             "${imagename:?}:${imagetag:?}" \
-            "${imagerepo:?}/${imagename:?}:${imagetag:?}"
+            "${reponame:?}/${imagename:?}:${imagetag:?}"
         podman push \
-            "${imagerepo:?}/${imagename:?}:${imagetag:?}"
+            "${reponame:?}/${imagename:?}:${imagetag:?}"
         }
 
     pushtags()
         {
-        local imagerepo=${1:?}
+        local reponame=${1:?}
         local imagename=${2:?}
         local imagetag=${3:?}
-        tagpush "${imagerepo:?}" "${imagename:?}" "latest"
-        tagpush "${imagerepo:?}" "${imagename:?}" "${buildtag:?}"
+        pushtag "${reponame:?}" "${imagename:?}" "latest"
+        pushtag "${reponame:?}" "${imagename:?}" "${imagetag:?}"
         }
 
-    tagpush "ghcr.io" "atolmis/fedora" "latest"
-    tagpush "ghcr.io" "atolmis/fedora" "${buildtag:?}"
+    pushtags "ghcr.io/wfau" "atolmis/fedora" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/fedora" "${buildtag:?}"
 
-    tagpush "ghcr.io" "atolmis/openssh-client" "latest"
-    tagpush "ghcr.io" "atolmis/openssh-client" "${buildtag:?}"
+    pushtags "ghcr.io/wfau" "atolmis/openssh-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/openssh-client" "${buildtag:?}"
 
-    tagpush "ghcr.io" "atolmis/kubernetes-client" "latest"
-    tagpush "ghcr.io" "atolmis/kubernetes-client" "${buildtag:?}"
+    pushtags "ghcr.io/wfau" "atolmis/kubernetes-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/kubernetes-client" "${buildtag:?}"
 
-    tagpush "ghcr.io" "atolmis/openstack-client" "latest"
-    tagpush "ghcr.io" "atolmis/openstack-client" "${buildtag:?}"
+    pushtags "ghcr.io/wfau" "atolmis/openstack-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/openstack-client" "${buildtag:?}"
 
-    tagpush "ghcr.io" "atolmis/ansible-client" "latest"
-    tagpush "ghcr.io" "atolmis/ansible-client" "${buildtag:?}"
+    pushtags "ghcr.io/wfau" "atolmis/ansible-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/ansible-client" "${buildtag:?}"
 
-    tagpush "ghcr.io" "atolmis/digitalocean-client" "latest"
-    tagpush "ghcr.io" "atolmis/digitalocean-client" "${buildtag:?}"
+    pushtags "ghcr.io/wfau" "atolmis/digitalocean-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/digitalocean-client" "${buildtag:?}"
 
-    tagpush "ghcr.io" "atolmis/terraform-client" "latest"
-    tagpush "ghcr.io" "atolmis/terraform-client" "${buildtag:?}"
+    pushtags "ghcr.io/wfau" "atolmis/terraform-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/terraform-client" "${buildtag:?}"
 
 
