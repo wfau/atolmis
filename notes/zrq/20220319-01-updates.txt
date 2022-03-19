@@ -1,0 +1,148 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2022, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+#zrq-notes-time
+#zrq-notes-indent
+#zrq-notes-crypto
+#zrq-notes-ansible
+#zrq-notes-osformat
+#zrq-notes-zeppelin
+#
+
+    Target:
+
+        Update the containers and fix issues.
+
+    Result:
+
+        Work in progress ....
+
+
+# -----------------------------------------------------
+# Build on tyrosine
+#[user@tyrosine]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        git pull
+
+        bin/clean.sh
+
+    >   ....
+    >   Untagged: ghcr.io/wfau/atolmis/fedora:latest
+    >   Untagged: ghcr.io/wfau/atolmis/fedora:2022.03.19
+    >   ....
+    >   Deleted: a3660649a5f633c0899fcf2442ca2ff3bf5ee4fe1d76b715d41144d76a8513c4
+    >   Deleted: f4e9b36d106359d9644ab45d60ffd96e3ca93f5059b6e9291e1ae40fbd002114
+    >   ....
+
+
+        bin/build.sh
+
+    >   STEP 1/29: FROM registry.fedoraproject.org/fedora:36
+    >   ....
+    >   ....
+
+
+        podman images
+
+    >   REPOSITORY                                TAG         IMAGE ID      CREATED         SIZE
+    >   ghcr.io/wfau/atolmis/terraform-client     2022.03.19  d3975c7f95bb  6 minutes ago   1.11 GB
+    >   ghcr.io/wfau/atolmis/terraform-client     latest      d3975c7f95bb  6 minutes ago   1.11 GB
+    >   localhost/atolmis/terraform-client        2022.03.19  d3975c7f95bb  6 minutes ago   1.11 GB
+    >   localhost/atolmis/terraform-client        latest      d3975c7f95bb  6 minutes ago   1.11 GB
+    >   ghcr.io/wfau/atolmis/digitalocean-client  2022.03.19  43e5f0758c45  7 minutes ago   628 MB
+    >   ghcr.io/wfau/atolmis/digitalocean-client  latest      43e5f0758c45  7 minutes ago   628 MB
+    >   localhost/atolmis/digitalocean-client     2022.03.19  43e5f0758c45  7 minutes ago   628 MB
+    >   localhost/atolmis/digitalocean-client     latest      43e5f0758c45  7 minutes ago   628 MB
+    >   ghcr.io/wfau/atolmis/ansible-client       2022.03.19  6d90b80021ad  7 minutes ago   1.38 GB
+    >   ghcr.io/wfau/atolmis/ansible-client       latest      6d90b80021ad  7 minutes ago   1.38 GB
+    >   localhost/atolmis/ansible-client          2022.03.19  6d90b80021ad  7 minutes ago   1.38 GB
+    >   localhost/atolmis/ansible-client          latest      6d90b80021ad  7 minutes ago   1.38 GB
+    >   ghcr.io/wfau/atolmis/openstack-client     2022.03.19  b3c193e40b8a  9 minutes ago   970 MB
+    >   localhost/atolmis/openstack-client        latest      b3c193e40b8a  9 minutes ago   970 MB
+    >   ghcr.io/wfau/atolmis/openstack-client     latest      b3c193e40b8a  9 minutes ago   970 MB
+    >   localhost/atolmis/openstack-client        2022.03.19  b3c193e40b8a  9 minutes ago   970 MB
+    >   ghcr.io/wfau/atolmis/kubernetes-client    2022.03.19  2c00fb908123  12 minutes ago  565 MB
+    >   ghcr.io/wfau/atolmis/kubernetes-client    latest      2c00fb908123  12 minutes ago  565 MB
+    >   localhost/atolmis/kubernetes-client       2022.03.19  2c00fb908123  12 minutes ago  565 MB
+    >   localhost/atolmis/kubernetes-client       latest      2c00fb908123  12 minutes ago  565 MB
+    >   ghcr.io/wfau/atolmis/openssh-client       2022.03.19  d8ff21d717c4  14 minutes ago  405 MB
+    >   ghcr.io/wfau/atolmis/openssh-client       latest      d8ff21d717c4  14 minutes ago  405 MB
+    >   localhost/atolmis/openssh-client          latest      d8ff21d717c4  14 minutes ago  405 MB
+    >   localhost/atolmis/openssh-client          2022.03.19  d8ff21d717c4  14 minutes ago  405 MB
+    >   ghcr.io/wfau/atolmis/fedora               2022.03.19  a03eccfee917  16 minutes ago  377 MB
+    >   ghcr.io/wfau/atolmis/fedora               latest      a03eccfee917  16 minutes ago  377 MB
+    >   localhost/atolmis/fedora                  2022.03.19  a03eccfee917  16 minutes ago  377 MB
+    >   localhost/atolmis/fedora                  latest      a03eccfee917  16 minutes ago  377 MB
+    >   registry.fedoraproject.org/fedora         36          a642b5368fdc  20 hours ago    169 MB
+
+
+        bin/push.sh
+
+    >   Getting image source signatures
+    >   Copying blob 7c6d174910b8 done
+    >   Copying blob 257beea3ea2c done
+    >   ....
+    >   ....
+    >   Copying blob c00dc700ac08 skipped: already exists
+    >   Copying blob 8b6a232afc2c skipped: already exists
+    >   Copying config d3975c7f95 done
+    >   Writing manifest to image destination
+    >   Storing signatures
+
+
+        podman inspect ghcr.io/wfau/atolmis/openstack-client
+
+    >   ....
+    >   "Labels": {
+    >       "buildtag": "2022.03.19",
+    >       "buildtime": "2022-03-19T06:08:22",
+    >       "io.buildah.version": "1.23.1",
+    >       "license": "GPL-3.0-or-later",
+    >       "maintainer": "Dave Morris \u003cdocker-admin@metagrid.co.uk\u003e",
+    >       "name": "fedora",
+    >       "org.opencontainers.image.authors": "https://github.com/Zarquan",
+    >       "org.opencontainers.image.created": "2022-03-19T06:08:22",
+    >       "org.opencontainers.image.licenses": "GPL-3.0-or-later",
+    >       "org.opencontainers.image.source": "https://github.com/wfau/atolmis",
+    >       "org.opencontainers.image.vendor": "Wide Field Astronomy Unit (WFAU)",
+    >       "org.opencontainers.image.version": "2022.03.19",
+    >       "vendor": "Wide Field Astronomy Unit (WFAU)",
+    >       "version": "2022.03.19"
+    >   },
+    >   "Annotations": {
+    >       "org.opencontainers.image.base.digest": "sha256:92e6a348e36153741badc9d2cf22583d4b806e28d94ed16a46af248897e73a35",
+    >       "org.opencontainers.image.base.name": "localhost/atolmis/kubernetes-client:latest"
+    >   },
+    >   "ManifestType": "application/vnd.oci.image.manifest.v1+json",
+    >   ....
+
+
+    #
+    # We have the right labels, but the GitHub registry doesn't seem to be picking them up.
+    # LABEL org.opencontainers.image.source https://github.com/OWNER/REPO
+    # Ho hum, something for another time ...
+    #
+
+
+
+

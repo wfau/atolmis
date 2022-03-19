@@ -23,10 +23,18 @@ FROM atolmis/openssh-client:${buildtag}
 ARG buildtag
 ARG buildtime
 
-LABEL maintainer="Dave Morris <docker-admin@metagrid.co.uk>"
-LABEL buildtag="${buildtag}"
-LABEL buildtime="${buildtime}"
-LABEL gitrepo="https://github.com/wfau/atolmis"
+LABEL maintainer "Dave Morris <docker-admin@metagrid.co.uk>"
+LABEL buildtag   "${buildtag}"
+LABEL buildtime  "${buildtime}"
+LABEL vendor     "Wide Field Astronomy Unit (WFAU)"
+LABEL version    "${buildtag}"
+LABEL license    "GPL-3.0-or-later"
+LABEL org.opencontainers.image.created  "${buildtime}"
+LABEL org.opencontainers.image.vendor   "Wide Field Astronomy Unit (WFAU)"
+LABEL org.opencontainers.image.version  "${buildtag}"
+LABEL org.opencontainers.image.licenses "GPL-3.0-or-later"
+LABEL org.opencontainers.image.source   "https://github.com/wfau/atolmis"
+LABEL org.opencontainers.image.authors  "https://github.com/Zarquan"
 
 #
 # Install the Kubernetes client.
@@ -37,14 +45,14 @@ RUN dnf install -y kubernetes-client
 # https://helm.sh/docs/intro/install/
 # https://github.com/helm/helm/releases
 ENV HELM_ARCH linux-amd64
-ENV HELM_VERSION 3.6.3
+ENV HELM_VERSION 3.8.1
 ENV HELM_TARFILE helm-v${HELM_VERSION}-${HELM_ARCH}.tar.gz
 
 ADD https://get.helm.sh/${HELM_TARFILE} /tmp/${HELM_TARFILE}
 RUN tar --directory /tmp --gzip --extract --file /tmp/${HELM_TARFILE}
 RUN mv  /tmp/${HELM_ARCH}/helm /usr/local/bin/helm
 
-#
-# Install the S3 client
-RUN dnf install -y s3cmd
+RUN rm -rf /tmp/${HELM_ARCH}
+RUN rm -f  /tmp/${HELM_TARFILE}
+
 

@@ -1,0 +1,324 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2022, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+#zrq-notes-time
+#zrq-notes-indent
+#zrq-notes-crypto
+#zrq-notes-ansible
+#zrq-notes-osformat
+#zrq-notes-zeppelin
+#
+
+
+    Target:
+
+        Update the containers and fix issues.
+
+    Result:
+
+        Work in progress ....
+
+# -----------------------------------------------------
+# Checkout where we are ...
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        git status
+
+    >   On branch 20210824-zrq-updates
+    >   Your branch is up to date with 'origin/20210824-zrq-updates'.
+    >
+    >   Changes not staged for commit:
+    >     (use "git add <file>..." to update what will be committed)
+    >     (use "git restore <file>..." to discard changes in working directory)
+    >   	modified:   bin/build.sh
+    >   	modified:   bin/clean.sh
+    >   	modified:   bin/push.sh
+    >
+    >   Untracked files:
+    >     (use "git add <file>..." to include in what will be committed)
+    >   	notes/zrq/20220318-01-updates.txt
+
+    popd
+
+
+
+# -----------------------------------------------------
+# Check where we are, update versions and fix some issues ...
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        meld . &
+            ....
+            ....
+
+        gedit bin/build.sh
+            ....
+
+        gedit bin/push.sh
+            ....
+
+        gedit docker/fedora/Dockerfile
+            ....
+
+        gedit docker/kubernetes-client/Dockerfile
+            ....
+
+
+    popd
+
+
+# -----------------------------------------------------
+# Build all our containers
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        bin/clean.sh
+
+        bin/build.sh
+
+    >   /var/local/projects/WFAU/atolmis/github-zrq /var/local/projects/WFAU/atolmis/github-zrq
+    >   STEP 1: FROM registry.fedoraproject.org/fedora:36
+    >   ....
+    >   ....
+    >   STEP 10: RUN dnf install -y     dateutils     diffutils     findutils     gnupg     gzip      less      nano      patch     pwgen     sed       tar       wget      which     zip
+    >   Fedora 36 - x86_64                              0.0  B/s |   0  B     00:00
+    >   Errors during downloading metadata for repository 'fedora':
+    >     - Curl error (6): Couldn't resolve host name for https://mirrors.fedoraproject.org/metalink?repo=fedora-36&arch=x86_64 [getaddrinfo() thread failed to start]
+    >   Error: Failed to download metadata for repo 'fedora': Cannot prepare internal mirrorlist: Curl error (6): Couldn't resolve host name for https://mirrors.fedoraproject.org/metalink?repo=fedora-36&arch=x86_64 [getaddrinfo() thread failed to start]
+    >   ....
+    >   ....
+
+    #
+    # Which looks like this issue.
+    # https://github.com/containers/buildah/issues/2168
+
+    #
+    # Comment at the ned suggests this is an issue with 'crun'.
+    # https://github.com/containers/buildah/issues/2168#issuecomment-587388143
+
+        I think /usr/share/containers/seccomp.json already has an entry for clone that filters
+        for flags argument, it's just that crun does not apply it correctly.
+        This crun upstream fix has fixed the issue for me.
+
+    #
+    # linux: use correct indices for seccomp arguments
+    # https://github.com/containers/crun/commit/08efb1e31597a435c7afd59e844d35c4888841e9
+
+    #
+    # Fix went in it Feb 2020, so it might already be in the latest Fedora.
+    # Tyrosine has a more recent version of Fedora, we should try the build there.
+    #
+
+# -----------------------------------------------------
+# Save our changes
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        git add .
+
+        git commit -m "Updated versions and fixed issues"
+
+    >   [20210824-zrq-updates e943276] Updated versions and fixed issues
+    >    5 files changed, 176 insertions(+), 7 deletions(-)
+    >    create mode 100644 notes/zrq/20220318-01-updates.txt
+
+
+        git push
+
+    >   Enumerating objects: 54, done.
+    >   Counting objects: 100% (54/54), done.
+    >   Delta compression using up to 4 threads
+    >   Compressing objects: 100% (33/33), done.
+    >   Writing objects: 100% (40/40), 7.51 KiB | 1.50 MiB/s, done.
+    >   Total 40 (delta 20), reused 0 (delta 0), pack-reused 0
+    >   remote: Resolving deltas: 100% (20/20), completed with 5 local objects.
+    >   remote:
+    >   remote: Create a pull request for '20210824-zrq-updates' on GitHub by visiting:
+    >   remote:      https://github.com/Zarquan/atolmis/pull/new/20210824-zrq-updates
+    >   remote:
+    >   To github.com:Zarquan/atolmis.git
+    >    * [new branch]      20210824-zrq-updates -> 20210824-zrq-updates
+
+
+# -----------------------------------------------------
+# Checkout a copy on Tyrosine
+#[user@tyrosine]
+
+    cat "${HOME:?}/atolmis.env"
+
+    >   source "${HOME:?}/projects.env"
+    >   ATOLMIS_REPO='git@github.com:Zarquan/atolmis.git'
+    >   ATOLMIS_HOME="${PROJECTS_ROOT}/WFAU/atolmis"
+    >   ATOLMIS_CODE="${ATOLMIS_HOME:?}/github-zrq"
+
+
+    cat "${HOME:?}/projects.env"
+
+    >   # Top level projects directory.
+    >   PROJECTS_ROOT='/var/local/projects'
+
+
+    scp "${HOME:?}/projects.env" \
+        "tyrosine:projects.env"
+
+    >   projects.env        100%  889   639.7KB/s   00:00
+
+
+    scp "${HOME:?}/atolmis.env" \
+        "tyrosine:atolmis.env"
+
+    >   atolmis.env         100%  171   200.7KB/s   00:00
+
+
+    ssh tyrosine
+
+        vi "${HOME:?}/projects.env"
+
+    >   # Top level projects directory.
+    >   PROJECTS_ROOT=${HOME}/projects
+
+
+        source "${HOME:?}/atolmis.env"
+        mkdir -p "${ATOLMIS_HOME}"
+        pushd "${ATOLMIS_HOME}"
+
+            git clone "${ATOLMIS_REPO:?}" "$(basename ${ATOLMIS_CODE:?})"
+
+        popd
+
+    >   Cloning into 'github-zrq'...
+    >   The authenticity of host 'github.com (140.82.121.3)' can't be established.
+    >   ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
+    >   This key is not known by any other names
+    >   Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+    >   Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+    >   remote: Enumerating objects: 209, done.
+    >   remote: Counting objects: 100% (30/30), done.
+    >   remote: Compressing objects: 100% (24/24), done.
+    >   remote: Total 209 (delta 3), reused 13 (delta 3), pack-reused 179
+    >   Receiving objects: 100% (209/209), 51.96 KiB | 611.00 KiB/s, done.
+    >   Resolving deltas: 100% (84/84), done.
+
+
+        pushd "${ATOLMIS_CODE}"
+
+            git checkout 20210824-zrq-updates
+
+        popd
+
+    >   branch '20210824-zrq-updates' set up to track 'origin/20210824-zrq-updates'.
+    >   Switched to a new branch '20210824-zrq-updates'
+
+
+        pushd "${ATOLMIS_CODE}"
+
+            bin/clean.sh
+
+            bin/build.sh
+
+
+    >   ....
+    >   STEP 10/21: RUN dnf install -y     dateutils     diffutils     findutils     gnupg     gzip      less      nano      patch     pwgen     sed       tar       wget      which     zip
+    >   Fedora 36 - x86_64                              6.1 MB/s |  80 MB     00:13
+    >   Fedora 36 openh264 (From Cisco) - x86_64        2.1 kB/s | 2.5 kB     00:01
+    >   ....
+    >   ....
+    >   Dependencies resolved.
+    >   ================================================================================
+    >    Package          Arch        Version                Repository            Size
+    >   ================================================================================
+    >   Installing:
+    >    dateutils        x86_64      0.4.9-3.fc36           fedora               348 k
+    >    diffutils        x86_64      3.8-2.fc36             fedora               370 k
+    >    less             x86_64      590-3.fc36             fedora               160 k
+    >    nano             x86_64      6.0-2.fc36             fedora               694 k
+    >    patch            x86_64      2.7.6-16.fc36          fedora               124 k
+    >    pwgen            x86_64      2.08-8.fc36            fedora                29 k
+    >    wget             x86_64      1.21.3-1.fc36          updates-testing      780 k
+    >    which            x86_64      2.21-32.fc36           fedora                42 k
+    >    zip              x86_64      3.0-32.fc36            fedora               260 k
+    >   Installing dependencies:
+    >    ed               x86_64      1.14.2-12.fc36         fedora                73 k
+    >    info             x86_64      6.8-3.fc36             fedora               225 k
+    >    libmetalink      x86_64      0.1.3-25.fc36          fedora                32 k
+    >    unzip            x86_64      6.0-57.fc36            fedora               182 k
+    >   
+    >   Transaction Summary
+    >   ================================================================================
+    >   Install  13 Packages
+    >   
+    >   Total download size: 3.2 M
+    >   Installed size: 11 M
+    >   Downloading Packages:
+    >   (1/13): ed-1.14.2-12.fc36.x86_64.rpm            176 kB/s |  73 kB     00:00
+    >   (2/13): diffutils-3.8-2.fc36.x86_64.rpm         692 kB/s | 370 kB     00:00
+    >   (3/13): dateutils-0.4.9-3.fc36.x86_64.rpm       606 kB/s | 348 kB     00:00
+    >   (4/13): info-6.8-3.fc36.x86_64.rpm              1.1 MB/s | 225 kB     00:00
+    >   (5/13): less-590-3.fc36.x86_64.rpm              1.5 MB/s | 160 kB     00:00
+    >   (6/13): libmetalink-0.1.3-25.fc36.x86_64.rpm    432 kB/s |  32 kB     00:00
+    >   (7/13): pwgen-2.08-8.fc36.x86_64.rpm            649 kB/s |  29 kB     00:00
+    >   (8/13): patch-2.7.6-16.fc36.x86_64.rpm          1.3 MB/s | 124 kB     00:00
+    >   (9/13): unzip-6.0-57.fc36.x86_64.rpm            2.0 MB/s | 182 kB     00:00
+    >   (10/13): which-2.21-32.fc36.x86_64.rpm          608 kB/s |  42 kB     00:00
+    >   (11/13): nano-6.0-2.fc36.x86_64.rpm             2.5 MB/s | 694 kB     00:00
+    >   (12/13): zip-3.0-32.fc36.x86_64.rpm             1.4 MB/s | 260 kB     00:00
+    >   (13/13): wget-1.21.3-1.fc36.x86_64.rpm          3.4 MB/s | 780 kB     00:00
+    >   --------------------------------------------------------------------------------
+    >   Total                                           2.0 MB/s | 3.2 MB     00:01
+    >   Running transaction check
+    >   Transaction check succeeded.
+    >   Running transaction test
+    >   Transaction test succeeded.
+    >   Running transaction
+    >     Preparing        :                                                        1/1
+    >     Installing       : unzip-6.0-57.fc36.x86_64                              1/13
+    >     ....
+    >     ....
+    >     Verifying        : wget-1.21.3-1.fc36.x86_64                            13/13
+    >   
+    >   Installed:
+    >     dateutils-0.4.9-3.fc36.x86_64         diffutils-3.8-2.fc36.x86_64
+    >     ed-1.14.2-12.fc36.x86_64              info-6.8-3.fc36.x86_64
+    >     less-590-3.fc36.x86_64                libmetalink-0.1.3-25.fc36.x86_64
+    >     nano-6.0-2.fc36.x86_64                patch-2.7.6-16.fc36.x86_64
+    >     pwgen-2.08-8.fc36.x86_64              unzip-6.0-57.fc36.x86_64
+    >     wget-1.21.3-1.fc36.x86_64             which-2.21-32.fc36.x86_64
+    >     zip-3.0-32.fc36.x86_64
+    >   
+    >   Complete!
+    >   --> db53f9c8092
+    >   ....
+
+    #
+    # So yes, the bug was in 'crun' and is fixed in the latest Fedora.
+    #
+
+
+
+

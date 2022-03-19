@@ -23,10 +23,18 @@ FROM atolmis/fedora:${buildtag}
 ARG buildtag
 ARG buildtime
 
-LABEL maintainer="Dave Morris <docker-admin@metagrid.co.uk>"
-LABEL buildtag="${buildtag}"
-LABEL buildtime="${buildtime}"
-LABEL gitrepo="https://github.com/wfau/atolmis"
+LABEL maintainer "Dave Morris <docker-admin@metagrid.co.uk>"
+LABEL buildtag   "${buildtag}"
+LABEL buildtime  "${buildtime}"
+LABEL vendor     "Wide Field Astronomy Unit (WFAU)"
+LABEL version    "${buildtag}"
+LABEL license    "GPL-3.0-or-later"
+LABEL org.opencontainers.image.created  "${buildtime}"
+LABEL org.opencontainers.image.vendor   "Wide Field Astronomy Unit (WFAU)"
+LABEL org.opencontainers.image.version  "${buildtag}"
+LABEL org.opencontainers.image.licenses "GPL-3.0-or-later"
+LABEL org.opencontainers.image.source   "https://github.com/wfau/atolmis"
+LABEL org.opencontainers.image.authors  "https://github.com/Zarquan"
 
 #
 # Install the SSH client.

@@ -37,35 +37,56 @@
 # Login to the Docker registry.
 #[user@desktop]
 
-    podman login \
-        --username $(secret docker.io.user) \
-        --password $(secret docker.io.pass) \
-        registry-1.docker.io
+    secret 'ghcr.io.pass' \
+    | podman login \
+        --password-stdin \
+        --username "$(secret 'ghcr.io.user')" \
+        'ghcr.io'
 
-    #
-    # New behaviour - podman needs the registry name here.
-    #
 
 # -----------------------------------------------------
-# Push our images to Docker hub.
-#[user@desktop]
+# Push our images to the GitHub repository.
 
-    podman push "atolmis/fedora:${buildtag:?}"
-    podman push "atolmis/fedora:latest"
+    pushtag()
+        {
+        local reponame=${1:?}
+        local imagename=${2:?}
+        local imagetag=${3:?}
+        podman tag \
+            "${imagename:?}:${imagetag:?}" \
+            "${reponame:?}/${imagename:?}:${imagetag:?}"
+        podman push \
+            "${reponame:?}/${imagename:?}:${imagetag:?}"
+        }
 
-    podman push "atolmis/openssh-client:${buildtag:?}"
-    podman push "atolmis/openssh-client:latest"
+    pushtags()
+        {
+        local reponame=${1:?}
+        local imagename=${2:?}
+        local imagetag=${3:?}
+        pushtag "${reponame:?}" "${imagename:?}" "latest"
+        pushtag "${reponame:?}" "${imagename:?}" "${imagetag:?}"
+        }
 
-    podman push "atolmis/kubernetes-client:${buildtag:?}"
-    podman push "atolmis/kubernetes-client:latest"
+    pushtags "ghcr.io/wfau" "atolmis/fedora" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/fedora" "${buildtag:?}"
 
-    podman push "atolmis/openstack-client:${buildtag:?}"
-    podman push "atolmis/openstack-client:latest"
+    pushtags "ghcr.io/wfau" "atolmis/openssh-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/openssh-client" "${buildtag:?}"
 
-    podman push "atolmis/ansible-client:${buildtag:?}"
-    podman push "atolmis/ansible-client:latest"
+    pushtags "ghcr.io/wfau" "atolmis/kubernetes-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/kubernetes-client" "${buildtag:?}"
 
-    podman push "atolmis/terraform-client:${buildtag:?}"
-    podman push "atolmis/terraform-client:latest"
+    pushtags "ghcr.io/wfau" "atolmis/openstack-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/openstack-client" "${buildtag:?}"
+
+    pushtags "ghcr.io/wfau" "atolmis/ansible-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/ansible-client" "${buildtag:?}"
+
+    pushtags "ghcr.io/wfau" "atolmis/digitalocean-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/digitalocean-client" "${buildtag:?}"
+
+    pushtags "ghcr.io/wfau" "atolmis/terraform-client" "latest"
+    pushtags "ghcr.io/wfau" "atolmis/terraform-client" "${buildtag:?}"
 
 

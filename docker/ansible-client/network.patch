@@ -1,8 +1,0 @@
-232c232
-<                                                mtu_size=mtu, dns_domain=dns_domain)
----
->                                                mtu_size=mtu)
-237c237
-<                                                mtu_size=mtu, dns_domain=dns_domain)
----
->                                                mtu_size=mtu)

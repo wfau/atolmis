@@ -23,26 +23,18 @@ FROM atolmis/kubernetes-client:${buildtag}
 ARG buildtag
 ARG buildtime
 
-LABEL maintainer="Dave Morris <docker-admin@metagrid.co.uk>"
-LABEL buildtag="${buildtag}"
-LABEL buildtime="${buildtime}"
-LABEL gitrepo="https://github.com/wfau/atolmis"
-
-#
-# Install the Openstack clients.
-# https://docs.openstack.org/python-openstackclient/latest/
-#RUN dnf install -y \
-#    python3-heatclient \
-#    python3-magnumclient \
-#    python3-manilaclient \
-#    python3-octaviaclient \
-#    python3-openstackclient
-
-# Apply our encoding fix.
-# https://review.opendev.org/gitweb?p=openstack%2Fpython-magnumclient.git;a=commitdiff;h=3f7b994acd3eaac2321006b34cebfcb07d924934
-#COPY encoding.patch /tmp
-#RUN  patch -i /tmp/encoding.patch \
-#     /usr/lib/python3.7/site-packages/magnumclient/common/utils.py
+LABEL maintainer "Dave Morris <docker-admin@metagrid.co.uk>"
+LABEL buildtag   "${buildtag}"
+LABEL buildtime  "${buildtime}"
+LABEL vendor     "Wide Field Astronomy Unit (WFAU)"
+LABEL version    "${buildtag}"
+LABEL license    "GPL-3.0-or-later"
+LABEL org.opencontainers.image.created  "${buildtime}"
+LABEL org.opencontainers.image.vendor   "Wide Field Astronomy Unit (WFAU)"
+LABEL org.opencontainers.image.version  "${buildtag}"
+LABEL org.opencontainers.image.licenses "GPL-3.0-or-later"
+LABEL org.opencontainers.image.source   "https://github.com/wfau/atolmis"
+LABEL org.opencontainers.image.authors  "https://github.com/Zarquan"
 
 #
 # Install PIP and GCC.

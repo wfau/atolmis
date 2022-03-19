@@ -23,10 +23,18 @@ FROM atolmis/openstack-client:${buildtag}
 ARG buildtag
 ARG buildtime
 
-LABEL maintainer="Dave Morris <docker-admin@metagrid.co.uk>"
-LABEL buildtag="${buildtag}"
-LABEL buildtime="${buildtime}"
-LABEL gitrepo="https://github.com/wfau/atolmis"
+LABEL maintainer "Dave Morris <docker-admin@metagrid.co.uk>"
+LABEL buildtag   "${buildtag}"
+LABEL buildtime  "${buildtime}"
+LABEL vendor     "Wide Field Astronomy Unit (WFAU)"
+LABEL version    "${buildtag}"
+LABEL license    "GPL-3.0-or-later"
+LABEL org.opencontainers.image.created  "${buildtime}"
+LABEL org.opencontainers.image.vendor   "Wide Field Astronomy Unit (WFAU)"
+LABEL org.opencontainers.image.version  "${buildtag}"
+LABEL org.opencontainers.image.licenses "GPL-3.0-or-later"
+LABEL org.opencontainers.image.source   "https://github.com/wfau/atolmis"
+LABEL org.opencontainers.image.authors  "https://github.com/Zarquan"
 
 #
 # Install the Terraform client.
@@ -34,15 +42,12 @@ LABEL gitrepo="https://github.com/wfau/atolmis"
 # https://github.com/RSE-Cambridge/iris-magnum/blob/master/magnum-tour/README.md
 # https://computingforgeeks.com/how-to-install-terraform-on-fedora/
 
-ENV TERRA_VERSION 1.0.5
+ENV TERRA_VERSION 1.1.7
 ENV TERRA_ZIPFILE terraform_${TERRA_VERSION}_linux_amd64.zip
 
-# Download the tar file
+# Download and install the zip file
 ADD https://releases.hashicorp.com/terraform/${TERRA_VERSION}/${TERRA_ZIPFILE} /tmp/${TERRA_ZIPFILE}
-
-# Unpack the tar file.
 RUN unzip -d /tmp /tmp/${TERRA_ZIPFILE}
-
-# Install the binary.
 RUN mv /tmp/terraform /usr/local/bin/terraform
+RUN rm /tmp/${TERRA_ZIPFILE}
 
