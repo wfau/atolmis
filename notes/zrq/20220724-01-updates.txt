@@ -1,0 +1,103 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2022, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+#zrq-notes-time
+#zrq-notes-indent
+#zrq-notes-crypto
+#zrq-notes-ansible
+#zrq-notes-osformat
+#zrq-notes-zeppelin
+#
+
+    Target:
+
+        Install git.
+        https://github.com/wfau/atolmis/issues/22
+
+        Update yq.
+        https://github.com/wfau/atolmis/issues/23
+
+    Result:
+
+        Work in progress ...
+
+# -----------------------------------------------------
+# Build new images
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        git pull
+
+        bin/clean.sh
+
+    >   ....
+    >   ....
+
+
+        bin/build.sh
+
+    >   /var/local/projects/WFAU/atolmis/github-zrq /var/local/projects/WFAU/atolmis/github-zrq
+    >   STEP 1/30: FROM registry.fedoraproject.org/fedora:36
+    >   Trying to pull registry.fedoraproject.org/fedora:36...
+    >   Getting image source signatures
+    >   ....
+    >   ....
+    >   Successfully tagged localhost/atolmis/terraform-client:latest
+    >   Successfully tagged localhost/atolmis/terraform-client:2022.07.24
+    >   77f0ef6022e81fce491358bfc2c5ece3b4b81636d7135ad832957ea9c9f26457
+    >   /var/local/projects/WFAU/atolmis/github-zrq
+
+
+        podman images
+
+    >   REPOSITORY                             TAG         IMAGE ID      CREATED             SIZE
+    >   localhost/atolmis/terraform-client     2022.07.24  77f0ef6022e8  51 seconds ago      1.16 GB
+    >   localhost/atolmis/terraform-client     latest      77f0ef6022e8  51 seconds ago      1.16 GB
+    >   localhost/atolmis/digitalocean-client  2022.07.24  91a55a42882d  About a minute ago  665 MB
+    >   localhost/atolmis/digitalocean-client  latest      91a55a42882d  About a minute ago  665 MB
+    >   localhost/atolmis/ansible-client       2022.07.24  ee4f7466632b  2 minutes ago       1.45 GB
+    >   localhost/atolmis/ansible-client       latest      ee4f7466632b  2 minutes ago       1.45 GB
+    >   localhost/atolmis/openstack-client     2022.07.24  a5f97f1e620e  5 minutes ago       1.01 GB
+    >   localhost/atolmis/openstack-client     latest      a5f97f1e620e  5 minutes ago       1.01 GB
+    >   localhost/atolmis/kubernetes-client    2022.07.24  7f0f01d30836  8 minutes ago       602 MB
+    >   localhost/atolmis/kubernetes-client    latest      7f0f01d30836  8 minutes ago       602 MB
+    >   localhost/atolmis/openssh-client       2022.07.24  9b60ba19afe7  10 minutes ago      438 MB
+    >   localhost/atolmis/openssh-client       latest      9b60ba19afe7  10 minutes ago      438 MB
+    >   localhost/atolmis/fedora               2022.07.24  729117dfe143  11 minutes ago      438 MB
+    >   localhost/atolmis/fedora               latest      729117dfe143  11 minutes ago      438 MB
+    >   registry.fedoraproject.org/fedora      36          3a66698e6040  2 months ago        169 MB
+
+
+        bin/push.sh
+
+    >   Getting image source signatures
+    >   Copying blob 144349fba965 done
+    >   Copying blob a000b57ff524 done
+    >   ....
+    >   ....
+    >   Copying blob f40f6ed41217 skipped: already exists
+    >   Copying blob 4dcc9057e8ab skipped: already exists
+    >   Copying config 77f0ef6022 done
+    >   Writing manifest to image destination
+    >   Storing signatures
+
+
