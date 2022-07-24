@@ -74,7 +74,7 @@ RUN dnf install -y yamllint
 
 #
 # Install yq YAML parser.
-RUN wget -O   '/usr/bin/yq' 'https://github.com/mikefarah/yq/releases/download/v4.22.1/yq_linux_amd64'
+RUN wget -O   '/usr/bin/yq' 'https://github.com/mikefarah/yq/releases/download/v4.26.1/yq_linux_amd64'
 RUN chmod a+x '/usr/bin/yq'
 
 #
@@ -90,6 +90,11 @@ RUN dnf install -y bind-utils
 #
 # Install the S3 client
 RUN dnf install -y s3cmd
+
+#
+# Install git
+# https://github.com/wfau/atolmis/issues/22
+RUN dnf install -y git
 
 #
 # Add our install scripts.
