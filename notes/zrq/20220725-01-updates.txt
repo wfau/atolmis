@@ -1,0 +1,105 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2022, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+#zrq-notes-time
+#zrq-notes-indent
+#zrq-notes-crypto
+#zrq-notes-ansible
+#zrq-notes-osformat
+#zrq-notes-zeppelin
+#
+
+    Target:
+
+        Fix Openstack client issue.
+        https://github.com/wfau/atolmis/issues/25
+
+    Result:
+
+        Work in progress ....
+
+
+# -----------------------------------------------------
+# Build new images
+#[user@desktop]
+
+    source "${HOME:?}/atolmis.env"
+    pushd "${ATOLMIS_CODE}"
+
+        bin/clean.sh
+
+    >   02800e2ae021391a066a908325a7ee31bf2f8cff149fbedbd23a79a386fd8f5d
+    >   Untagged: localhost/atolmis/terraform-client:latest
+    >   Untagged: localhost/atolmis/terraform-client:2022.07.24
+    >   ....
+    >   ....
+    >   Deleted: 444f7df01ce93f20c2e30cbac9ffc332b024cdd27118224ed55bcb3d287d163b
+    >   Deleted: 3a66698e604003f7822a0c73e9da50e090fda9a99fe1f2e1e2e7fe796cc803d5
+    >   Error: image name or ID must be specified
+
+
+        bin/build.sh
+
+    >   STEP 1/30: FROM registry.fedoraproject.org/fedora:36
+    >   Trying to pull registry.fedoraproject.org/fedora:36...
+    >   Getting image source signatures
+    >   Copying blob 75f075168a24 done
+    >   ....
+    >   ....
+    >   Successfully tagged localhost/atolmis/terraform-client:latest
+    >   Successfully tagged localhost/atolmis/terraform-client:2022.07.25
+    >   6b5df5566f5609f237ea8e8f9da2880dca550bd7b6fd56ced6de7203990929fa
+
+
+        podman images
+
+    >   REPOSITORY                             TAG         IMAGE ID      CREATED             SIZE
+    >   localhost/atolmis/terraform-client     2022.07.25  6b5df5566f56  29 seconds ago      1.17 GB
+    >   localhost/atolmis/terraform-client     latest      6b5df5566f56  29 seconds ago      1.17 GB
+    >   localhost/atolmis/digitalocean-client  2022.07.25  58227f3f9ad6  About a minute ago  665 MB
+    >   localhost/atolmis/digitalocean-client  latest      58227f3f9ad6  About a minute ago  665 MB
+    >   localhost/atolmis/ansible-client       2022.07.25  c6219f7cbbfa  2 minutes ago       1.46 GB
+    >   localhost/atolmis/ansible-client       latest      c6219f7cbbfa  2 minutes ago       1.46 GB
+    >   localhost/atolmis/openstack-client     2022.07.25  a40983d51779  4 minutes ago       1.03 GB
+    >   localhost/atolmis/openstack-client     latest      a40983d51779  4 minutes ago       1.03 GB
+    >   localhost/atolmis/kubernetes-client    2022.07.25  942ec8e5c435  8 minutes ago       602 MB
+    >   localhost/atolmis/kubernetes-client    latest      942ec8e5c435  8 minutes ago       602 MB
+    >   localhost/atolmis/openssh-client       2022.07.25  a9aa6b303872  10 minutes ago      438 MB
+    >   localhost/atolmis/openssh-client       latest      a9aa6b303872  10 minutes ago      438 MB
+    >   localhost/atolmis/fedora               2022.07.25  8da1ce4c079a  12 minutes ago      438 MB
+    >   localhost/atolmis/fedora               latest      8da1ce4c079a  12 minutes ago      438 MB
+    >   registry.fedoraproject.org/fedora      36          3a66698e6040  2 months ago        169 MB
+
+
+        bin/push.sh
+
+    >   Login Succeeded!
+    >   Getting image source signatures
+    >   Copying blob e4a9e6c5fb58 done
+    >   Copying blob c681ea53bed7 done
+    >   ....
+    >   ....
+    >   Copying blob b86512b661a5 skipped: already exists
+    >   Copying blob 07676008fcb6 skipped: already exists
+    >   Copying config 6b5df5566f done
+    >   Writing manifest to image destination
+    >   Storing signatures
+
+

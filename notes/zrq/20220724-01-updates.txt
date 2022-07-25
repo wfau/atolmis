@@ -36,7 +36,10 @@
 
     Result:
 
-        Work in progress ...
+        Build done, release deployed.
+        Discovered an issue with openstack version, to be fixed in the next build.
+        https://github.com/wfau/atolmis/issues/25
+
 
 # -----------------------------------------------------
 # Build new images

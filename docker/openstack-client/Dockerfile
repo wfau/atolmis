@@ -52,6 +52,11 @@ RUN pip3 install \
     python-octaviaclient \
     python-openstackclient
 
+# Pin the openstack client at a specific version.
+# https://github.com/wfau/atolmis/issues/25
+# https://storyboard.openstack.org/#!/story/2010103#comment-191473
+RUN pip3 install openstacksdk==0.61
+
 #
 # Add our util scripts.
 COPY bin /usr/local/bin/
